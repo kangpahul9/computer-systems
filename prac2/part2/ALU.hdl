@@ -12,21 +12,26 @@ CHIP ALU {
     Mux16(a=x, b=false, sel=zx, out=zxOut);
     Not16(in=zxOut, out=notX);
     Mux16(a=zxOut, b=notX, sel=nx, out=xOut);
+
     Mux16(a=y, b=false, sel=zy, out=zyOut);
     Not16(in=zyOut, out=notY);
     Mux16(a=zyOut, b=notY, sel=ny, out=yOut);
+
     And16(a=xOut, b=yOut, out=andOut);
     Add16(a=xOut, b=yOut, out=addOut);
     Mux16(a=andOut, b=addOut, sel=f, out=fOut);
+
     Not16(in=fOut, out=notFOut);
-    Mux16(a=fOut, b=notFOut, sel=no, out=out);
-    Or8Way(in[0]=out[0], in[1]=out[1], in[2]=out[2], in[3]=out[3],
-           in[4]=out[4], in[5]=out[5], in[6]=out[6], in[7]=out[7],
-           out=loBits);
-    Or8Way(in[0]=out[8], in[1]=out[9], in[2]=out[10], in[3]=out[11],
-           in[4]=out[12], in[5]=out[13], in[6]=out[14], in[7]=out[15],
-           out=hiBits);
-    Or(a=loBits, b=hiBits, out=nonZero);
+    Mux16(a=fOut, b=notFOut, sel=no,
+          out[0..7]=outLSB, out[8..14]=outMSB, out[15]=outMSBbit);
+
+    Mux16(a[0..7]=outLSB, a[8..14]=outMSB, a[15]=outMSBbit,
+          b=false, sel=false, out=out);
+
+    Or8Way(in=outLSB, out=orLow);
+    Or8Way(in[0..6]=outMSB, in[7]=outMSBbit, out=orHigh);
+    Or(a=orLow, b=orHigh, out=nonZero);
     Not(in=nonZero, out=zr);
-    Or(a=out[15], b=false, out=ng);
+
+    Or(a=outMSBbit, b=false, out=ng);
 }
