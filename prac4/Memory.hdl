@@ -28,9 +28,9 @@ CHIP Memory {
 
     PARTS:
     // Put your code here:
-    Not(in=load,out=loadRAM);
+    Not(in=address[14],out=loadRAM);
+    And(a=load,b=loadRAM,out=enableRAM);
     And(a=load,b=address[14],out=enableScreen);
-    And(a=load,b=loadRam,out=enableRAM);
     And(a=address[13],b=address[14],out=enableKeyboard);
     RAM16K(in=in,load=enableRAM,address=address[0..13],out=outRAM);
     Screen(in=in,load=enableScreen,address=address[0..12],out=outScreen);
