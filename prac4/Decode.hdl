@@ -26,4 +26,21 @@ CHIP Decode {
 
 PARTS:
     // Put your code here:
+    Or(a=in[15],b=false,out=tempType);
+    Mux(a=false,b=in[12],sel=tempType, out=a);
+    Mux(a=false,b=in[11],sel=tempType, out=c1);
+    Mux(a=false,b=in[10],sel=tempType, out=c2);
+    Mux(a=false,b=in[9],sel=tempType, out=c3);
+    Mux(a=false,b=in[8],sel=tempType, out=c4);
+    Mux(a=false,b=in[7],sel=tempType, out=c5);
+    Mux(a=false,b=in[6],sel=tempType, out=c6);
+    Mux(a=true,b=in[5],sel=tempType, out=d1);   // special case
+    Mux(a=false,b=in[4],sel=tempType, out=d2);
+    Mux(a=false,b=in[3],sel=tempType, out=d3);
+    Mux(a=false,b=in[2],sel=tempType, out=j1);
+    Mux(a=false,b=in[1],sel=tempType, out=j2);
+    Mux(a=false,b=in[0],sel=tempType, out=j3);
+    Or(a=tempType,b=false,out=type);
+    
+
 }
