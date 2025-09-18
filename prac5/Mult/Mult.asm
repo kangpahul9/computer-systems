@@ -14,12 +14,41 @@ M=0
 D=M
 @3
 M=D
+@2
+D=M
+@4
+M=D
+@5
+M=0
+
+@3
+D=M
+@ONE_NOTNEG
+D;JGT
+    @3
+    M=-M
+    @5
+    M=M+1
+
+(ONE_NOTNEG)
+
+@4
+D=M
+@TWO_NOTNEG
+D;JGT
+    @4
+    M=-M
+    @5
+    M=M+1
+
+(TWO_NOTNEG)
+
 (LOOP)
     @3
     D=M
-    @END
+    @LOOP_OVER
     D;JEQ
-    @2
+    @4
     D=M
     @0
     M=D+M
@@ -27,6 +56,14 @@ M=D
     M=M-1
     @LOOP
     0;JMP
+(LOOP_OVER)
+    @5
+    D=M;
+    @CHANGE
+    D;JEQ
+    @0
+    M=-M
+(CHANGE)
 (END)
     @END
     0;JMP

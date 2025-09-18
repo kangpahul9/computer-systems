@@ -15,8 +15,11 @@ D=M
     @0
     M=D
 (OUTPUT_TWO)
+    @1
+    D=M
+    D=-D
     @0
-    M=M-D
+    M=D
 (END)
     @END
     0;JMP
