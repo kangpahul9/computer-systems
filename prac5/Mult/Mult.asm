@@ -24,7 +24,7 @@ M=0
 @3
 D=M
 @ONE_NOTNEG
-D;JGT
+D;JGE
     @3
     M=-M
     @5
@@ -35,7 +35,7 @@ D;JGT
 @4
 D=M
 @TWO_NOTNEG
-D;JGT
+D;JGE
     @4
     M=-M
     @5
@@ -61,6 +61,8 @@ D;JGT
     D=M;
     @CHANGE
     D;JEQ
+    @CHANGE
+    D-1;JNE      
     @0
     M=-M
 (CHANGE)

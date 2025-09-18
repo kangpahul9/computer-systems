@@ -11,13 +11,13 @@ D=M
     D;JGE
 @OUTPUT_TWO
     0;JMP
-(OUTPUT_ONE)
-    @0
-    M=D
 (OUTPUT_TWO)
     @1
     D=M
     D=-D
+    @0
+    M=D
+(OUTPUT_ONE)
     @0
     M=D
 (END)
