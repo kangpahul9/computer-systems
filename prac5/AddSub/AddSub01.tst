@@ -13,7 +13,7 @@ set RAM[1] -10,  // Set R1
 set RAM[2] 5,  // Set R2
 set RAM[3] 15;  // Set R3
 repeat 200 {
-  ticktock;    // Run for 100 clock cycles
+  ticktock;    // Run for 200 clock cycles
 }
 set RAM[1] -10,  // Restore arguments in case program used them
 set RAM[2] 5,
