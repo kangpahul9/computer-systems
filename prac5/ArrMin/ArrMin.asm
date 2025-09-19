@@ -4,6 +4,10 @@
 // Put your code here.
 
 // R0 = min(RAM[R1]..RAM[R1+R2-1])
+@2
+D=M
+@END
+D;JEQ  
 @1
 D=M
 A=D
@@ -13,7 +17,10 @@ M=D
 
 @3
 M=1
-
+@2
+D=M-1
+@END
+D;JEQ
 (LOOP)
     @3
     D=M
