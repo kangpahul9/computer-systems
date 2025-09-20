@@ -5,12 +5,13 @@
 @2
 D=M
 @DONE
-D;JEQ
+D;JEQ      
+
 @2
 D=M
 D=D-1
 @DONE
-D;JEQ
+D;JEQ        
 
 // i = 0
 @3
@@ -21,10 +22,10 @@ M=0
     D=M
     @2
     D=D-M
+    D=D+1
     @DONE
     D;JGE
 
-    // minIndex = i
     @3
     D=M
     @6
@@ -45,7 +46,6 @@ M=0
     @AFTER_INNER
     D;JGE
 
-    // load arr[j] → R4
     @1
     D=M
     @5
@@ -55,7 +55,6 @@ M=0
     @4
     M=D
 
-    // load arr[minIndex] → D
     @1
     D=M
     @6
@@ -63,7 +62,6 @@ M=0
     A=D
     D=M
 
-    // compare arr[j] vs arr[minIndex]
     @4
     D=M-D
     @SKIP
@@ -81,7 +79,6 @@ M=0
     0;JMP
 
 (AFTER_INNER)
-    // if minIndex == i → no swap
     @3
     D=M
     @6
@@ -89,7 +86,6 @@ M=0
     @NO_SWAP
     D;JEQ
 
-    // addrI = base+i → R8
     @1
     D=M
     @3
@@ -97,7 +93,6 @@ M=0
     @8
     M=D
 
-    // addrMin = base+minIndex → R9
     @1
     D=M
     @6
@@ -105,14 +100,12 @@ M=0
     @9
     M=D
 
-    // temp = arr[i] → R7
     @8
     A=M
     D=M
     @7
     M=D
 
-    // arr[i] = arr[minIndex]
     @9
     A=M
     D=M
@@ -120,7 +113,6 @@ M=0
     A=M
     M=D
 
-    // arr[minIndex] = temp
     @7
     D=M
     @9

@@ -6,8 +6,15 @@
 // R0 = min(RAM[R1]..RAM[R1+R2-1])
 @2
 D=M
-@END
-D;JEQ  
+@EMPTY
+D;JEQ
+
+@2
+D=M
+D=D-1
+@ONE
+D;JEQ
+
 @1
 D=M
 A=D
@@ -17,10 +24,7 @@ M=D
 
 @3
 M=1
-@2
-D=M-1
-@END
-D;JEQ
+
 (LOOP)
     @3
     D=M
@@ -38,6 +42,7 @@ D;JEQ
     @4
     A=M
     D=M
+
     @0
     D=D-M
     @SKIP
@@ -53,6 +58,22 @@ D;JEQ
     @3
     M=M+1
     @LOOP
+    0;JMP
+
+(EMPTY)
+    @0
+    M=0
+    @END
+    0;JMP
+
+(ONE)
+    @1
+    D=M
+    A=D
+    D=M
+    @0
+    M=D
+    @END
     0;JMP
 
 (END)
