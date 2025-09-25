@@ -8,112 +8,160 @@
 // Output: array sorted in place
 // RAM[0] = -1 when finished
 
-@1
+@2
 D=M
+@DONE
+D;JEQ
 @2
-D=D+M
+D=M
 D=D-1
-@2
-M=D       
+@DONE
+D;JEQ
 
-(OUTER_LOOP)
-(CHECK_TERMINATE)
-    @1
-    D=M
-    @2
-    D=D-M
-    @FINISH
-    D;JGT       
+@3
+M=0
 
-    @1
-    D=M
-    @3
-    M=D+1       
-
-(INNER_LOOP)
-(CHECK_INNER_END)
+(OUTER)
     @3
     D=M
     @2
     D=D-M
-    @INNER_FINISH
-    D;JGT       
-
-    @3
-    A=M
-    D=M
-    @ELEM_POS
+    @DONE
     D;JGE
-    @ELEM_NEG
+
+    @3
+    D=M
+    @6
+    M=D
+
+    @3
+    D=M
+    D=D+1
+    @5
+    M=D
+
+(INNER)
+    @5
+    D=M
+    @2
+    D=D-M
+    @AFTER_INNER
+    D;JGE
+
+    @1
+    D=M
+    @5
+    D=D+M
+    A=D
+    D=M
+    @4
+    M=D
+
+    @1
+    D=M
+    @6
+    D=D+M
+    A=D
+    D=M
+    @REF_POS
+    D;JGE
+    @REF_NEG
     0;JMP
 
-(SWAP)
-    @1
-    A=M
+(REF_POS)
+    @4
     D=M
-    @5
-    M=D       
-
-    @3
-    A=M
+    @6
     D=M
     @1
-    A=M
-    M=D       
-
+    D=D+M
+    A=D
+    D=M
+    @4
+    D=M-D
+    @SKIP
+    D;JGE
     @5
     D=M
-    @3
-    A=M
-    M=D       
+    @6
+    M=D
+    @SKIP
+    0;JMP
+
+(REF_NEG)
+    @4
+    D=M
+    @6
+    D=M
+    @1
+    D=D+M
+    A=D
+    D=M
+    @4
+    D=M
+    @SKIP
+    D;JGE
+    @5
+    D=M
+    @6
+    M=D
 
 (SKIP)
+    @5
+    M=M+1
+    @INNER
+    0;JMP
+
+(AFTER_INNER)
+    @3
+    D=M
+    @6
+    D=D-M
+    @NO_SWAP
+    D;JEQ
+
+    @1
+    D=M
+    @3
+    D=D+M
+    @8
+    M=D
+
+    @1
+    D=M
+    @6
+    D=D+M
+    @9
+    M=D
+
+    @8
+    A=M
+    D=M
+    @7
+    M=D
+
+    @9
+    A=M
+    D=M
+    @8
+    A=M
+    M=D
+
+    @7
+    D=M
+    @9
+    A=M
+    M=D
+
+(NO_SWAP)
     @3
     M=M+1
-    @INNER_LOOP
+    @OUTER
     0;JMP
 
-(INNER_FINISH)
-    @1
-    M=M+1      
-    @OUTER_LOOP
-    0;JMP
-
-(FINISH)
+(DONE)
     @0
     M=-1
 (END)
     @END
-    0;JMP
-
-(REF_NEG)
-    
-(REF_POS)
-    @3
-    A=M
-    D=M
-    @1
-    A=M
-    D=D-M      
-    @SKIP
-    D;JGE
-    @SWAP
-    0;JMP
-
-(ELEM_NEG)
-    @1
-    A=M
-    D=M
-    @REF_NEG
-    D;JLT
-    @SWAP
-    0;JMP
-
-(ELEM_POS)
-    @1
-    A=M
-    D=M
-    @REF_POS
-    D;JGE
-    @SKIP
     0;JMP

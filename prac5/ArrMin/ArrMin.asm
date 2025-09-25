@@ -6,28 +6,22 @@
 // R0 = min(RAM[R1]..RAM[R1+R2-1])
 @2
 D=M
-@EMPTY
-D;JEQ        
+@END
+D;JEQ  
 
 @1
 D=M
-@2
-D=D+M
-D=D-1
-@2
-M=D           
-
-@1
-A=M
+A=D
 D=M
 @0
 M=D
 
-@1
-D=M
-D=D+1
 @3
-M=D
+M=1
+@2
+D=M-1
+@END
+D;JEQ
 
 (LOOP)
     @3
@@ -35,18 +29,24 @@ M=D
     @2
     D=D-M
     @END
-    D;JGT
+    D;JGE
 
+    @1
+    D=M
     @3
+    D=D+M
+    @4
+    M=D
+    @4
     A=M
     D=M
     @ELEM_POS
-    D;JGE        
+    D;JGE
     @ELEM_NEG
-    0;JMP        
+    0;JMP
 
 (UPDATE)
-    @3
+    @4
     A=M
     D=M
     @0
@@ -58,41 +58,44 @@ M=D
     @LOOP
     0;JMP
 
-(EMPTY)
-    @0
-    M=0
-    @END
-    0;JMP
-
-(END)
-    @END
-    0;JMP
-
-(REF_NEG)
-    
-(REF_POS)
-    @3
-    A=M
-    D=M
-    @0
-    D=D-M       
-    @SKIP
-    D;JGE       
-    @UPDATE
-    0;JMP
-
 (ELEM_NEG)
     @0
     D=M
     @REF_NEG
-    D;JLT        
-    @UPDATE      
+    D;JLT
+    @UPDATE
     0;JMP
 
 (ELEM_POS)
     @0
     D=M
     @REF_POS
-    D;JGE       
-    @SKIP       
+    D;JGE
+    @SKIP
+    0;JMP
+
+(REF_POS)
+    @4
+    A=M
+    D=M
+    @0
+    D=D-M
+    @SKIP
+    D;JGE
+    @UPDATE
+    0;JMP
+
+(REF_NEG)
+    @4
+    A=M
+    D=M
+    @0
+    D=D-M
+    @SKIP
+    D;JGE
+    @UPDATE
+    0;JMP
+
+(END)
+    @END
     0;JMP
