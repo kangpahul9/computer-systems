@@ -11,19 +11,23 @@ D;JEQ
 
 @1
 D=M
-A=D
+@2
+D=D+M
+D=D-1
+@2
+M=D           
+
+@1
+A=M
 D=M
 @0
 M=D
 
-@2
+@1
 D=M
-D=D-1
-@END
-D;JEQ         
-
+D=D+1
 @3
-M=1           
+M=D
 
 (LOOP)
     @3
@@ -31,31 +35,24 @@ M=1
     @2
     D=D-M
     @END
-    D;JGE
+    D;JGT
 
-    @1
-    D=M
     @3
-    D=D+M
-    @4
-    M=D
-
-    @4
     A=M
     D=M
+    @ELEM_POS
+    D;JGE        
+    @ELEM_NEG
+    0;JMP        
 
-    @0
-    D=D-M
-    @SKIP
-    D;JGE      
-    @4
+(UPDATE)
+    @3
     A=M
     D=M
     @0
     M=D
 
 (SKIP)
-    // index++
     @3
     M=M+1
     @LOOP
@@ -63,8 +60,39 @@ M=1
 
 (EMPTY)
     @0
-    M=0          
+    M=0
+    @END
+    0;JMP
 
 (END)
     @END
+    0;JMP
+
+(REF_NEG)
+    
+(REF_POS)
+    @3
+    A=M
+    D=M
+    @0
+    D=D-M       
+    @SKIP
+    D;JGE       
+    @UPDATE
+    0;JMP
+
+(ELEM_NEG)
+    @0
+    D=M
+    @REF_NEG
+    D;JLT        
+    @UPDATE      
+    0;JMP
+
+(ELEM_POS)
+    @0
+    D=M
+    @REF_POS
+    D;JGE       
+    @SKIP       
     0;JMP

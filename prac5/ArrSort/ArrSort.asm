@@ -8,92 +8,112 @@
 // Output: array sorted in place
 // RAM[0] = -1 when finished
 
-// --- Convert length to last address ---
 @1
 D=M
 @2
-D=D+M        
-D=D-1        
+D=D+M
+D=D-1
 @2
-M=D          
+M=D       
 
-(OUTER)
+(OUTER_LOOP)
+(CHECK_TERMINATE)
     @1
     D=M
     @2
     D=D-M
-    @DONE
-    D;JGT        
+    @FINISH
+    D;JGT       
 
     @1
     D=M
-    D=D+1
     @3
-    M=D
+    M=D+1       
 
-(INNER)
+(INNER_LOOP)
+(CHECK_INNER_END)
     @3
     D=M
     @2
     D=D-M
-    @AFTER_INNER
-    D;JGT        
+    @INNER_FINISH
+    D;JGT       
 
     @3
     A=M
     D=M
-    @4
-    M=D        
-
-    @1
-    A=M
-    D=M        
-
-    @4
-    D=M-D
-    @SKIP
-    D;JGE      
-    @SWAP
-    0;JMP       
+    @ELEM_POS
+    D;JGE
+    @ELEM_NEG
+    0;JMP
 
 (SWAP)
     @1
     A=M
     D=M
     @5
-    M=D
+    M=D       
 
     @3
     A=M
     D=M
     @1
     A=M
-    M=D
+    M=D       
 
-    // *RAM[3] = RAM[5]
     @5
     D=M
     @3
     A=M
-    M=D
+    M=D       
 
 (SKIP)
-    // RAM[3]++
     @3
     M=M+1
-    @INNER
+    @INNER_LOOP
     0;JMP
 
-(AFTER_INNER)
-    // RAM[1]++
+(INNER_FINISH)
     @1
-    M=M+1
-    @OUTER
+    M=M+1      
+    @OUTER_LOOP
     0;JMP
 
-(DONE)
+(FINISH)
     @0
     M=-1
 (END)
     @END
+    0;JMP
+
+(REF_NEG)
+    
+(REF_POS)
+    @3
+    A=M
+    D=M
+    @1
+    A=M
+    D=D-M      
+    @SKIP
+    D;JGE
+    @SWAP
+    0;JMP
+
+(ELEM_NEG)
+    @1
+    A=M
+    D=M
+    @REF_NEG
+    D;JLT
+    @SWAP
+    0;JMP
+
+(ELEM_POS)
+    @1
+    A=M
+    D=M
+    @REF_POS
+    D;JGE
+    @SKIP
     0;JMP
