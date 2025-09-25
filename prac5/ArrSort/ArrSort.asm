@@ -129,6 +129,9 @@ M=0
 (DONE)
     @0
     M=-1
+    @END
+    0;JMP
+
 (END)
     @END
     0;JMP
