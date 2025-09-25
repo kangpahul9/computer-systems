@@ -7,13 +7,7 @@
 @2
 D=M
 @EMPTY
-D;JEQ
-
-@2
-D=M
-D=D-1
-@ONE
-D;JEQ
+D;JEQ        
 
 @1
 D=M
@@ -22,8 +16,14 @@ D=M
 @0
 M=D
 
+@2
+D=M
+D=D-1
+@END
+D;JEQ         
+
 @3
-M=1
+M=1           
 
 (LOOP)
     @3
@@ -39,6 +39,7 @@ M=1
     D=D+M
     @4
     M=D
+
     @4
     A=M
     D=M
@@ -46,8 +47,7 @@ M=1
     @0
     D=D-M
     @SKIP
-    D;JGE
-
+    D;JGE      
     @4
     A=M
     D=M
@@ -55,6 +55,7 @@ M=1
     M=D
 
 (SKIP)
+    // index++
     @3
     M=M+1
     @LOOP
@@ -62,19 +63,7 @@ M=1
 
 (EMPTY)
     @0
-    M=0
-    @END
-    0;JMP
-
-(ONE)
-    @1
-    D=M
-    A=D
-    D=M
-    @0
-    M=D
-    @END
-    0;JMP
+    M=0          
 
 (END)
     @END
