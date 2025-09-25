@@ -61,6 +61,8 @@ M=1
     0;JMP
 
 (EMPTY)
+    @0
+    M=0
     @END
     0;JMP
 

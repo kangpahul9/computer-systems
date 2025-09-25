@@ -4,14 +4,14 @@
 // Put your code here.
 @2
 D=M
-@DONE
-D;JEQ      
+@EMPTY
+D;JEQ          // if R2 == 0 → jump to EMPTY
 
 @2
 D=M
 D=D-1
-@DONE
-D;JEQ        
+@ONE
+D;JEQ          // if R2 == 1 → jump to ONE
 
 // i = 0
 @3
@@ -124,6 +124,18 @@ M=0
     @3
     M=M+1
     @OUTER
+    0;JMP
+
+(EMPTY)
+    @0
+    M=-1
+    @END
+    0;JMP
+
+(ONE)
+    @0
+    M=-1
+    @END
     0;JMP
 
 (DONE)
