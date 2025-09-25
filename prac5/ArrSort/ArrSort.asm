@@ -7,7 +7,6 @@
 // RAM[2] = length
 // Output: array sorted in place
 // RAM[0] = -1 when finished
-
 @2
 D=M
 @DONE
@@ -63,48 +62,10 @@ M=0
     D=D+M
     A=D
     D=M
-    @REF_POS
+    @ELEM_POS
     D;JGE
-    @REF_NEG
+    @ELEM_NEG
     0;JMP
-
-(REF_POS)
-    @4
-    D=M
-    @6
-    D=M
-    @1
-    D=D+M
-    A=D
-    D=M
-    @4
-    D=M-D
-    @SKIP
-    D;JGE
-    @5
-    D=M
-    @6
-    M=D
-    @SKIP
-    0;JMP
-
-(REF_NEG)
-    @4
-    D=M
-    @6
-    D=M
-    @1
-    D=D+M
-    A=D
-    D=M
-    @4
-    D=M
-    @SKIP
-    D;JGE
-    @5
-    D=M
-    @6
-    M=D
 
 (SKIP)
     @5
@@ -164,4 +125,63 @@ M=0
     M=-1
 (END)
     @END
+    0;JMP
+
+(REF_NEG)
+    @4
+    D=M
+    @0
+    D=M
+    @SKIP
+    D;JGE
+    @5
+    D=M
+    @6
+    M=D
+    @SKIP
+    0;JMP
+
+(REF_POS)
+    @4
+    D=M
+    @0
+    D=M
+    @SKIP
+    D;JLT
+    @4
+    D=M
+    @1
+    D=M
+    @6
+    D=D+M
+    A=D
+    D=M
+    D=M-D
+    @SKIP
+    D;JGE
+    @5
+    D=M
+    @6
+    M=D
+    @SKIP
+    0;JMP
+
+(ELEM_NEG)
+    @0
+    D=M
+    @REF_NEG
+    D;JLT
+    @5
+    D=M
+    @6
+    M=D
+    @SKIP
+    0;JMP
+
+(ELEM_POS)
+    @0
+    D=M
+    @REF_POS
+    D;JGE
+    @SKIP
     0;JMP
