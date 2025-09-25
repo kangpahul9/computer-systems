@@ -7,117 +7,67 @@
 // RAM[2] = length
 // Output: array sorted in place
 // RAM[0] = -1 when finished
-@2
-D=M
-@DONE
-D;JEQ
-@2
-D=M
-D=D-1
-@DONE
-D;JEQ
+  @1           // the address of arr[0]
+    D=M-1        // subtract 1 because the array starts from arr[0]
+    @2           // the length
+    M=M+D        // now R2 is the address of the last element
 
-@3
-M=0
-
-(OUTER)
-    @3
+(LOOP_OUTER)
+(CHK_TERM)
+    @1
     D=M
     @2
     D=D-M
     @DONE
-    D;JGE
-
-    @3
+    D;JGT
+    @1
     D=M
-    @6
-    M=D
+    @3          // inner loop index
+    M=D+1 
 
+(LOOP_INNER)
+(CHK_INNER)
     @3
-    D=M
-    D=D+1
-    @5
-    M=D
-
-(INNER)
-    @5
     D=M
     @2
     D=D-M
-    @AFTER_INNER
-    D;JGE
-
-    @1
-    D=M
-    @5
-    D=D+M
-    A=D
-    D=M
-    @4
-    M=D
-
-    @1
-    D=M
-    @6
-    D=D+M
-    A=D
+    @INNER_END
+    D;JGT
+    @3
+    A=M
     D=M
     @ELEM_POS
     D;JGE
     @ELEM_NEG
     0;JMP
 
-(SKIP)
-    @5
+(SWAP_VAL)
+    @1
+    A=M
+    D=M
+    @13
+    M=D
+    @3
+    A=M
+    D=M
+    @1
+    A=M
+    M=D
+    @13
+    D=M
+    @3
+    A=M
+    M=D
+(SKIP_SWAP)
+    @3
     M=M+1
-    @INNER
+    @LOOP_INNER
     0;JMP
 
-(AFTER_INNER)
-    @3
-    D=M
-    @6
-    D=D-M
-    @NO_SWAP
-    D;JEQ
-
+(INNER_END)
     @1
-    D=M
-    @3
-    D=D+M
-    @8
-    M=D
-
-    @1
-    D=M
-    @6
-    D=D+M
-    @9
-    M=D
-
-    @8
-    A=M
-    D=M
-    @7
-    M=D
-
-    @9
-    A=M
-    D=M
-    @8
-    A=M
-    M=D
-
-    @7
-    D=M
-    @9
-    A=M
-    M=D
-
-(NO_SWAP)
-    @3
     M=M+1
-    @OUTER
+    @LOOP_OUTER
     0;JMP
 
 (DONE)
@@ -128,60 +78,33 @@ M=0
     0;JMP
 
 (REF_NEG)
-    @4
-    D=M
-    @0
-    D=M
-    @SKIP
-    D;JGE
-    @5
-    D=M
-    @6
-    M=D
-    @SKIP
-    0;JMP
-
+    
 (REF_POS)
-    @4
-    D=M
-    @0
-    D=M
-    @SKIP
-    D;JLT
-    @4
+    @3
+    A=M
     D=M
     @1
-    D=M
-    @6
-    D=D+M
-    A=D
-    D=M
-    D=M-D
-    @SKIP
+    A=M
+    D=D-M
+    @SKIP_SWAP
     D;JGE
-    @5
-    D=M
-    @6
-    M=D
-    @SKIP
+    @SWAP_VAL
     0;JMP
 
 (ELEM_NEG)
-    @0
+    @1
+    A=M
     D=M
     @REF_NEG
     D;JLT
-    @5
-    D=M
-    @6
-    M=D
-    @SKIP
+    @SWAP_VAL
     0;JMP
 
 (ELEM_POS)
-    @0
+    @1
+    A=M
     D=M
     @REF_POS
     D;JGE
-    @SKIP
+    @SKIP_SWAP
     0;JMP
