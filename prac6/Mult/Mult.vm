@@ -1,0 +1,92 @@
+// Calculates a = x*y
+// a is a local variable
+// x & y are static variables
+
+// Put your code here.
+push constant 0
+pop local 0
+
+push constant 0
+pop temp 2
+push constant 0
+pop temp 3
+
+push static 0
+push constant 0
+lt
+if-goto flipFirst
+push static 0
+pop temp 0
+goto checkSecond
+
+label flipFirst
+    push constant 1
+    pop temp 2
+    push static 0
+    neg
+    pop temp 0
+    
+
+label checkSecond
+    push static 1
+    push constant 0
+    lt
+    if-goto flipSecond
+    push static 1
+    pop temp 1
+    goto checkBig
+
+label flipSecond
+    push constant 1
+    pop temp 3
+    push static 1
+    neg
+    pop temp 1 
+
+label checkBig
+push temp 0
+push temp 1
+gt
+if-goto loop     
+    push temp 0     
+    pop temp 4       
+    push temp 1      
+    pop temp 0       
+    push temp 4      
+    pop temp 1
+
+label loop 
+    push temp 1
+    push constant 0
+    eq
+    if-goto checkSigns
+
+    push local 0
+    push temp 0
+    add
+    pop local 0
+
+    push temp 1
+    push constant 1
+    sub
+    pop temp 1
+
+    goto loop 
+
+
+label checkSigns
+    push temp 2
+    push temp 3
+    add
+    push constant 1
+    eq
+    if-goto signChange
+    goto END
+
+label signChange
+    push local 0
+    neg
+    pop local 0
+
+label END
+goto END
