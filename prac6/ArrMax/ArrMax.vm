@@ -1,5 +1,47 @@
-// Contains a function ArrMax.arrMax that finds and returns the largest element in the array a of length b.
-// a & b are both supplied as arguments
+function ArrMax.arrMax 2
+// local[0] = index
+push constant 0
+pop local 0
 
-// Put your code here.
+// local[1] = max = first element a[0]
+push argument 0
+pop pointer 0
+push this 0
+pop local 1
 
+label LOOP_START
+// while (index < length)
+push local 0
+push argument 1
+lt
+not
+if-goto LOOP_END
+
+// load a[index]
+push argument 0
+push local 0
+add
+pop pointer 0
+push this 0        // D = a[i]
+
+// compare to current max
+push local 1
+gt
+if-goto SET_MAX
+pop temp 0         // discard a[i] if not greater
+goto NEXT
+
+label SET_MAX
+pop local 1        // update max
+
+label NEXT
+// index++
+push local 0
+push constant 1
+add
+pop local 0
+goto LOOP_START
+
+label LOOP_END
+push local 1
+return
