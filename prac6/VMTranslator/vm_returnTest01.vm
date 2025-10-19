@@ -1,0 +1,5 @@
+function vm_returnTest01.square 0
+push argument 0
+push argument 0
+add                  
+return

@@ -1,0 +1,10 @@
+function Simple.addTwo 0
+push argument 0
+push argument 1
+add
+return
+
+function vm_callTest01.main 0
+push constant 7
+push constant 8
+call Simple.addTwo 2

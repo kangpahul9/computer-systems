@@ -1,0 +1,5 @@
+push constant 21
+pop argument 0 
+
+push constant 99
+pop temp 2  

@@ -1,0 +1,6 @@
+push constant 5
+if-goto TRUE_BRANCH
+push constant 999    
+label TRUE_BRANCH
+push constant 10
+add 

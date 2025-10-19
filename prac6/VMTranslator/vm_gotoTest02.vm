@@ -1,0 +1,9 @@
+push constant 1
+goto TARGET
+push constant 2    
+label TARGET
+push constant 3
+add                 
+goto END
+push constant 999    
+label END

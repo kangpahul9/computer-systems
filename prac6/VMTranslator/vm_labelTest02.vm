@@ -1,0 +1,8 @@
+label INIT
+push constant 1
+
+label LOOP
+push constant 2
+add
+
+label END

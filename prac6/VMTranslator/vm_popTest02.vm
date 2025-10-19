@@ -1,0 +1,8 @@
+push constant 11
+pop this 0 
+
+push constant 22
+pop that 0 
+
+push constant 333
+pop pointer 0

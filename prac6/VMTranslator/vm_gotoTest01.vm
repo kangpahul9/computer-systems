@@ -1,0 +1,6 @@
+push constant 5
+goto SKIP
+push constant 999    
+label SKIP
+push constant 10
+add

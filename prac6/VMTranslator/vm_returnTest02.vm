@@ -1,0 +1,11 @@
+function AddOne 0
+push argument 0
+push constant 1
+add
+return
+
+function vm_returnTest02.main 0
+push constant 9
+call AddOne 1        
+push constant 4
+add 

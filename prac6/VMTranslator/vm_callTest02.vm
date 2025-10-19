@@ -1,0 +1,9 @@
+function DoubleVal 0
+push argument 0
+push argument 0
+add
+return
+
+function vm_callTest02.main 0
+push constant 5
+call DoubleVal 1  

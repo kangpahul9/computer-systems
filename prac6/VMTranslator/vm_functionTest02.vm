@@ -1,0 +1,3 @@
+function vm_functionTest02.testfunc 1
+push constant 1
+pop local 0
