@@ -28,34 +28,35 @@ static string toStr(int n) {
 
 /** Generate Hack Assembly code for a VM push operation */
 string VMTranslator::vm_push(string segment, int offset){
-     string code = "";
+    string code = "";
     string index = toStr(offset);
 
     if (segment == "constant") {
-        code += "@"+index+"\nD=A\n";
-    } 
+        code += "@" + index + "\nD=A\n";
+    }
     else if (segment == "local") {
-        code += "@LCL\nD=M\n@"+index+"\nA=D+A\nD=M\n";
-    } 
+        code += "@LCL\nD=M\n@" + index + "\nA=D+A\nD=M\n";
+    }
     else if (segment == "argument") {
-        code += "@ARG\nD=M\n@"+index+"\nA=D+A\nD=M\n";
-    } 
+        code += "@ARG\nD=M\n@" + index + "\nA=D+A\nD=M\n";
+    }
     else if (segment == "this") {
-        code += "@THIS\nD=M\n@"+index+"\nA=D+A\nD=M\n";
-    } 
+        code += "@THIS\nD=M\n@" + index + "\nA=D+A\nD=M\n";
+    }
     else if (segment == "that") {
-        code += "@THAT\nD=M\n@"+index+"\nA=D+A\nD=M\n";
-    } 
+        code += "@THAT\nD=M\n@" + index + "\nA=D+A\nD=M\n";
+    }
     else if (segment == "temp") {
-        int base = 5 + offset;
-        code += "@"+toStr(base)+"\nD=M\n";
-    } 
+        code += "@" + toStr(5 + offset) + "\nD=M\n";
+    }
     else if (segment == "pointer") {
-        int base = 3 + offset; // 0=this(3),1=that(4)
-        code += "@"+toStr(base)+"\nD=M\n";
-    } 
+        if (offset == 0)
+            code += "@THIS\nD=M\n";
+        else
+            code += "@THAT\nD=M\n";
+    }
     else if (segment == "static") {
-        code += "@Static."+index+"\nD=M\n";
+        code += "@Static." + index + "\nD=M\n";
     }
 
     code += "@SP\nA=M\nM=D\n@SP\nM=M+1\n";
@@ -68,16 +69,18 @@ string VMTranslator::vm_pop(string segment, int offset){
     string index = toStr(offset);
 
     if (segment == "temp") {
-        int base = 5 + offset;
-        code += "@SP\nAM=M-1\nD=M\n@"+toStr(base)+"\nM=D\n";
-    } 
+        code += "@SP\nAM=M-1\nD=M\n@" + toStr(5 + offset) + "\nM=D\n";
+    }
     else if (segment == "pointer") {
-        int base = 3 + offset;
-        code += "@SP\nAM=M-1\nD=M\n@"+toStr(base)+"\nM=D\n";
-    } 
+        code += "@SP\nAM=M-1\nD=M\n";
+        if (offset == 0)
+            code += "@THIS\nM=D\n";
+        else
+            code += "@THAT\nM=D\n";
+    }
     else if (segment == "static") {
-        code += "@SP\nAM=M-1\nD=M\n@Static."+index+"\nM=D\n";
-    } 
+        code += "@SP\nAM=M-1\nD=M\n@Static." + index + "\nM=D\n";
+    }
     else {
         string seg;
         if (segment == "local") seg = "LCL";
@@ -85,7 +88,7 @@ string VMTranslator::vm_pop(string segment, int offset){
         else if (segment == "this") seg = "THIS";
         else if (segment == "that") seg = "THAT";
 
-        code += "@"+seg+"\nD=M\n@"+index+"\nD=D+A\n@R13\nM=D\n";
+        code += "@" + seg + "\nD=M\n@" + index + "\nD=D+A\n@R13\nM=D\n";
         code += "@SP\nAM=M-1\nD=M\n@R13\nA=M\nM=D\n";
     }
     return code;
