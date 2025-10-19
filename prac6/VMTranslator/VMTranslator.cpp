@@ -56,7 +56,7 @@ string VMTranslator::vm_push(string segment, int offset){
             code += "@THAT\nD=M\n";
     }
     else if (segment == "static") {
-        code += "@Static." + index + "\nD=M\n";
+    code += "@" + toStr(16 + offset) + "\nD=M\n";
     }
 
     code += "@SP\nA=M\nM=D\n@SP\nM=M+1\n";
@@ -78,8 +78,8 @@ string VMTranslator::vm_pop(string segment, int offset){
         else
             code += "@THAT\nM=D\n";
     }
-    else if (segment == "static") {
-        code += "@SP\nAM=M-1\nD=M\n@Static." + index + "\nM=D\n";
+   else if (segment == "static") {
+        code += "@SP\nAM=M-1\nD=M\n@" + to_string(16 + offset) + "\nM=D\n";
     }
     else {
         string seg;
