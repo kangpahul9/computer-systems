@@ -27,21 +27,21 @@ ParseTree* CompilerParser::compileProgram() {
  * @return a ParseTree
  */
 ParseTree* CompilerParser::compileClass() {
-    ParseTree* node = new ParseTree("class", "");
-    node->addChild(new ParseTree("keyword", mustBe("keyword", "class")->getValue()));
-    node->addChild(new ParseTree("identifier", mustBe("identifier", "")->getValue()));
-    node->addChild(new ParseTree("symbol", mustBe("symbol", "{")->getValue()));
+    ParseTree* Ptree = new ParseTree("class", "");
+    Ptree->addChild(new ParseTree("keyword", mustBe("keyword", "class")->getValue()));
+    Ptree->addChild(new ParseTree("identifier", mustBe("identifier", "")->getValue()));
+    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "{")->getValue()));
 
     while(have("keyword", "static") || have("keyword", "field")){
-        node->addChild(compileClassVarDec());
+        Ptree->addChild(compileClassVarDec());
     }
     while(have("keyword", "constructor") || have("keyword", "method") || have("keyword", "function")){
-        node->addChild(compileSubroutine());
+        Ptree->addChild(compileSubroutine());
     }
 
-    node->addChild(new ParseTree("symbol", mustBe("symbol", "}")->getValue()));
+    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "}")->getValue()));
 
-    return node;
+    return Ptree;
 }
 
 /**
@@ -49,20 +49,20 @@ ParseTree* CompilerParser::compileClass() {
  * @return a ParseTree
  */
 ParseTree* CompilerParser::compileClassVarDec() {
-   ParseTree* node = new ParseTree("classVarDec", "");
-    node->addChild(new ParseTree("keyword", mustBe("keyword", have("keyword", "static") ? "static" : "field")->getValue()));
-    node->addChild(new ParseTree("keyword", mustBe("keyword", "")->getValue())); // type keyword or identifier
+   ParseTree* Ptree = new ParseTree("classVarDec", "");
+    Ptree->addChild(new ParseTree("keyword", mustBe("keyword", have("keyword", "static") ? "static" : "field")->getValue()));
+    Ptree->addChild(new ParseTree("keyword", mustBe("keyword", "")->getValue())); // type keyword or identifier
 
-    node->addChild(new ParseTree("identifier", mustBe("identifier", "")->getValue()));
+    Ptree->addChild(new ParseTree("identifier", mustBe("identifier", "")->getValue()));
 
     // Handle comma-separated variable names
     while (have("symbol", ",")) {
-        node->addChild(new ParseTree("symbol", mustBe("symbol", ",")->getValue()));
-        node->addChild(new ParseTree("identifier", mustBe("identifier", "")->getValue()));
+        Ptree->addChild(new ParseTree("symbol", mustBe("symbol", ",")->getValue()));
+        Ptree->addChild(new ParseTree("identifier", mustBe("identifier", "")->getValue()));
     }
 
-    node->addChild(new ParseTree("symbol", mustBe("symbol", ";")->getValue()));
-    return node;
+    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", ";")->getValue()));
+    return Ptree;
 }
 
 /**
