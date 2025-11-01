@@ -81,7 +81,7 @@ ParseTree *CompilerParser::compileClassVarDec()
  */
 ParseTree *CompilerParser::compileSubroutine()
 {
-    ParseTree *Ptree = new ParseTree("subroutine", "");
+    ParseTree *Ptree = new ParseTree("subroutineDec", "");
     Ptree->addChild(new ParseTree("keyword", mustBe("keyword", "")->getValue())); // type of subroutine
 
     if (have("keyword", "void") || have("keyword", "int") || have("keyword", "char") ||
