@@ -1,3 +1,4 @@
+
 #include "CompilerParser.h"
 std::list<Token*> allTokens;
 std::list<Token*>::iterator currToken;
@@ -150,14 +151,19 @@ ParseTree* CompilerParser::compileVarDec() {
  */
 ParseTree* CompilerParser::compileStatements() {
     ParseTree* Ptree = new ParseTree("statements", "");
-    while (have("keyword", "let") || have("keyword", "if") || have("keyword", "while") ||
-           have("keyword", "do") || have("keyword", "return")) {
-        if (have("keyword", "let")) Ptree->addChild(compileLet());
-        else if (have("keyword", "if")) Ptree->addChild(compileIf());
-        else if (have("keyword", "while")) Ptree->addChild(compileWhile());
-        else if (have("keyword", "do")) Ptree->addChild(compileDo());
+
+    while (have("keyword", "let") || have("keyword", "do") ||
+           have("keyword", "return") || have("keyword", "if") ||
+           have("keyword", "while")) {
+
+        if (have("keyword", "let"))       Ptree->addChild(compileLet());
+        else if (have("keyword", "do"))   Ptree->addChild(compileDo());
         else if (have("keyword", "return")) Ptree->addChild(compileReturn());
+        else if (have("keyword", "if"))   Ptree->addChild(compileIf());
+        else if (have("keyword", "while"))Ptree->addChild(compileWhile());
+        else break;
     }
+
     return Ptree;
 }
 
@@ -192,6 +198,7 @@ ParseTree* CompilerParser::compileIf() {
     Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "(")->getValue()));
     Ptree->addChild(compileExpression());
     Ptree->addChild(new ParseTree("symbol", mustBe("symbol", ")")->getValue()));
+
     Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "{")->getValue()));
     Ptree->addChild(compileStatements());
     Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "}")->getValue()));
@@ -228,7 +235,7 @@ ParseTree* CompilerParser::compileWhile() {
 ParseTree* CompilerParser::compileDo() {
     ParseTree* Ptree = new ParseTree("doStatement", "");
     Ptree->addChild(new ParseTree("keyword", mustBe("keyword", "do")->getValue()));
-    Ptree->addChild(compileTerm()); // reuse term to parse subroutineCall
+    Ptree->addChild(compileExpression());
     Ptree->addChild(new ParseTree("symbol", mustBe("symbol", ";")->getValue()));
     return Ptree;
 }
@@ -240,7 +247,8 @@ ParseTree* CompilerParser::compileDo() {
 ParseTree* CompilerParser::compileReturn() {
     ParseTree* Ptree = new ParseTree("returnStatement", "");
     Ptree->addChild(new ParseTree("keyword", mustBe("keyword", "return")->getValue()));
-    if (!have("symbol", ";")) Ptree->addChild(compileExpression());
+    if (!have("symbol", ";"))
+        Ptree->addChild(compileExpression());
     Ptree->addChild(new ParseTree("symbol", mustBe("symbol", ";")->getValue()));
     return Ptree;
 }
@@ -250,16 +258,7 @@ ParseTree* CompilerParser::compileReturn() {
  * @return a ParseTree
  */
 ParseTree* CompilerParser::compileExpression() {
-    ParseTree* Ptree = new ParseTree("expression", "");
-    Ptree->addChild(compileTerm());
-
-    while (have("symbol", "+") || have("symbol", "-") || have("symbol", "*") || have("symbol", "/") ||
-           have("symbol", "&") || have("symbol", "|") || have("symbol", "<") ||
-           have("symbol", ">") || have("symbol", "=")) {
-        Ptree->addChild(new ParseTree("symbol", mustBe("symbol", current()->getValue())->getValue()));
-        Ptree->addChild(compileTerm());
-    }
-    return Ptree;
+    return NULL;
 }
 
 /**
