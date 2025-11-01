@@ -78,28 +78,15 @@ ParseTree *CompilerParser::compileClassVarDec()
  */
 ParseTree *CompilerParser::compileSubroutine()
 {
-    ParseTree *Ptree = new ParseTree("subroutineDec", "");
+    ParseTree *Ptree = new ParseTree("subroutineBody", "");
+    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "{")->getValue()));
 
-    // constructor | function | method
-    Ptree->addChild(new ParseTree("keyword",
-        mustBe("keyword", have("keyword", "constructor")
-                            ? "constructor"
-                            : have("keyword", "function")
-                                ? "function"
-                                : "method")->getValue()));
+    while (have("keyword", "var"))
+        Ptree->addChild(compileVarDec());
 
-    // return type
-    if (have("keyword", "void") || have("keyword", "int") ||
-        have("keyword", "char") || have("keyword", "boolean"))
-        Ptree->addChild(new ParseTree("keyword", mustBe("keyword", "")->getValue()));
-    else
-        Ptree->addChild(new ParseTree("identifier", mustBe("identifier", "")->getValue()));
+    Ptree->addChild(compileStatements());
 
-    Ptree->addChild(new ParseTree("identifier", mustBe("identifier", "")->getValue()));
-    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "(")->getValue()));
-    Ptree->addChild(compileParameterList());
-    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", ")")->getValue()));
-    Ptree->addChild(compileSubroutineBody());
+    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "}")->getValue()));
     return Ptree;
 }
 
