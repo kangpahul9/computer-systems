@@ -79,12 +79,23 @@ ParseTree *CompilerParser::compileClassVarDec()
 ParseTree *CompilerParser::compileSubroutine()
 {
     ParseTree* Ptree = new ParseTree("subroutine", "");
-    Ptree->addChild(mustBe("symbol", "{"));
-    while (have("keyword", "var")) {
-        Ptree->addChild(compileVarDec());
-    }
-    Ptree->addChild(compileStatements());
-    Ptree->addChild(mustBe("symbol", "}"));
+    if (have("keyword", "constructor"))
+        Ptree->addChild(mustBe("keyword", "constructor"));
+    else if (have("keyword", "method"))
+        Ptree->addChild(mustBe("keyword", "method"));
+    else
+        Ptree->addChild(mustBe("keyword", "function"));
+    if (have("keyword", "void"))
+        Ptree->addChild(mustBe("keyword", "void"));
+    else if (have("keyword", "int") || have("keyword", "char") || have("keyword", "boolean"))
+        Ptree->addChild(mustBe("keyword", ""));
+    else
+        Ptree->addChild(mustBe("identifier", ""));
+    Ptree->addChild(mustBe("identifier", ""));
+    Ptree->addChild(mustBe("symbol", "("));
+    Ptree->addChild(compileParameterList());
+    Ptree->addChild(mustBe("symbol", ")"));
+    Ptree->addChild(compileSubroutineBody());
     return Ptree;
 }
 
