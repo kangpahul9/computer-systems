@@ -78,7 +78,7 @@ ParseTree *CompilerParser::compileClassVarDec()
  */
 ParseTree *CompilerParser::compileSubroutine()
 {
-    ParseTree* Ptree = new ParseTree("subroutineBody", "");
+    ParseTree* Ptree = new ParseTree("subroutine", "");
     Ptree->addChild(mustBe("symbol", "{"));
     while (have("keyword", "var")) {
         Ptree->addChild(compileVarDec());
