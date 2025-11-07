@@ -9,6 +9,8 @@
 
 class CompilerParser {
     public:
+    std::list<Token *> allTokens;
+    std::list<Token *>::iterator currToken;
         CompilerParser(std::list<Token*> tokens);
 
         ParseTree* compileProgram();
