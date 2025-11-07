@@ -133,17 +133,12 @@ ParseTree *CompilerParser::compileParameterList()
  */
 ParseTree *CompilerParser::compileSubroutineBody()
 {
-    ParseTree *Ptree = new ParseTree("subroutineBody", "");
-
-    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "{")->getValue()));
-
+    ParseTree* Ptree = new ParseTree("subroutineBody", "");
+    Ptree->addChild(mustBe("symbol", "{"));
     while (have("keyword", "var"))
         Ptree->addChild(compileVarDec());
-
     Ptree->addChild(compileStatements());
-
-    Ptree->addChild(new ParseTree("symbol", mustBe("symbol", "}")->getValue()));
-
+    Ptree->addChild(mustBe("symbol", "}"));
     return Ptree;
 }
 
@@ -180,24 +175,15 @@ ParseTree *CompilerParser::compileVarDec()
 ParseTree *CompilerParser::compileStatements()
 {
     ParseTree* Ptree = new ParseTree("statements", "");
-
     while (have("keyword", "let") || have("keyword", "if") ||
            have("keyword", "while") || have("keyword", "do") ||
            have("keyword", "return")) {
-
-        if (have("keyword", "let")) {
-            Ptree->addChild(compileLet());
-        } else if (have("keyword", "if")) {
-            Ptree->addChild(compileIf());
-        } else if (have("keyword", "while")) {
-            Ptree->addChild(compileWhile());
-        } else if (have("keyword", "do")) {
-            Ptree->addChild(compileDo());
-        } else if (have("keyword", "return")) {
-            Ptree->addChild(compileReturn());
-        }
+        if (have("keyword", "let"))      Ptree->addChild(compileLet());
+        else if (have("keyword", "if"))  Ptree->addChild(compileIf());
+        else if (have("keyword", "while")) Ptree->addChild(compileWhile());
+        else if (have("keyword", "do"))  Ptree->addChild(compileDo());
+        else                             Ptree->addChild(compileReturn());
     }
-
     return Ptree;
 }
 
@@ -280,13 +266,12 @@ ParseTree *CompilerParser::compileDo()
  */
 ParseTree *CompilerParser::compileReturn()
 {
-    ParseTree* ptree = new ParseTree("returnStatement", "");
-    ptree->addChild(mustBe("keyword", "return"));
-    if (!have("symbol", ";")) {
-        ptree->addChild(compileExpression());
-    }
-    ptree->addChild(mustBe("symbol", ";"));
-    return ptree;
+    ParseTree* Ptree = new ParseTree("returnStatement", "");
+    Ptree->addChild(mustBe("keyword", "return"));
+    if (!have("symbol", ";"))
+        Ptree->addChild(compileExpression());
+    Ptree->addChild(mustBe("symbol", ";"));
+    return Ptree;
 }
 
 /**
